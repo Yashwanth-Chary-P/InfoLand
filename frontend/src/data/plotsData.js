@@ -1,0 +1,42 @@
+// Dummy data for 30 plots with SVG coordinates for map layout
+export const initialPlotsData = [
+  // Row 1 (Plots 1-6)
+  { plotId: 1, owner: "Govt", soilType: "Clay", area: 1200, suitability: "Residential", svgPoints: "50,50 170,50 170,150 50,150", recommendations: [{ type: "Single Family Home", builder: "GreenBuild Construction" }, { type: "Townhouse Complex", builder: "Urban Development Co." }] },
+  { plotId: 2, owner: "Private", soilType: "Sandy", area: 800, suitability: "Industrial", svgPoints: "200,50 300,50 300,130 200,130", recommendations: [{ type: "Warehouse", builder: "Industrial Solutions Ltd" }, { type: "Manufacturing Plant", builder: "ProBuild Industries" }] },
+  { plotId: 3, owner: "Govt", soilType: "Loamy", area: 1500, suitability: "Residential", svgPoints: "350,50 490,50 490,160 350,160", recommendations: [{ type: "Apartment Complex", builder: "Metro Builders" }, { type: "Mixed Development", builder: "CityScape Developers" }] },
+  { plotId: 4, owner: "Private", soilType: "Clay", area: 900, suitability: "Factory", svgPoints: "530,50 620,50 620,150 530,150", recommendations: [{ type: "Food Processing Plant", builder: "AgriTech Industries" }, { type: "Textile Factory", builder: "Manufacturing Corp" }] },
+  { plotId: 5, owner: "Govt", soilType: "Sandy", area: 1100, suitability: "Residential", svgPoints: "650,50 760,50 760,150 650,150", recommendations: [{ type: "Affordable Housing", builder: "Community Builders" }, { type: "Senior Living", builder: "Golden Age Construction" }] },
+  { plotId: 6, owner: "Private", soilType: "Loamy", area: 1300, suitability: "Industrial", svgPoints: "800,50 930,50 930,150 800,150", recommendations: [{ type: "Tech Park", builder: "Innovation Builders" }, { type: "Research Facility", builder: "Science Park Developers" }] },
+
+  // Row 2 (Plots 7-12)
+  { plotId: 7, owner: "Private", soilType: "Clay", area: 1000, suitability: "Residential", svgPoints: "50,200 150,200 150,300 50,300", recommendations: [{ type: "Luxury Villas", builder: "Elite Construction" }, { type: "Gated Community", builder: "Premium Developers" }] },
+  { plotId: 8, owner: "Govt", soilType: "Sandy", area: 1400, suitability: "Industrial", svgPoints: "200,200 340,200 340,300 200,300", recommendations: [{ type: "Logistics Hub", builder: "Transport Solutions" }, { type: "Distribution Center", builder: "Supply Chain Builders" }] },
+  { plotId: 9, owner: "Private", soilType: "Loamy", area: 750, suitability: "Factory", svgPoints: "380,200 455,200 455,300 380,300", recommendations: [{ type: "Chemical Plant", builder: "ChemBuild Industries" }, { type: "Pharmaceutical Facility", builder: "MedTech Construction" }] },
+  { plotId: 10, owner: "Govt", soilType: "Clay", area: 1600, suitability: "Residential", svgPoints: "500,200 660,200 660,300 500,300", recommendations: [{ type: "Public Housing", builder: "Government Builders" }, { type: "Student Housing", builder: "Education Developers" }] },
+  { plotId: 11, owner: "Private", soilType: "Sandy", area: 950, suitability: "Industrial", svgPoints: "700,200 795,200 795,300 700,300", recommendations: [{ type: "Data Center", builder: "Tech Infrastructure" }, { type: "Server Farm", builder: "Digital Solutions" }] },
+  { plotId: 12, owner: "Govt", soilType: "Loamy", area: 1250, suitability: "Residential", svgPoints: "830,200 955,200 955,300 830,300", recommendations: [{ type: "Eco-Friendly Homes", builder: "Green Living Builders" }, { type: "Solar Community", builder: "Renewable Energy Co." }] },
+
+  // Row 3 (Plots 13-18)
+  { plotId: 13, owner: "Private", soilType: "Clay", area: 1050, suitability: "Factory", x: 50, y: 350, width: 105, height: 100, recommendations: [{ type: "Automotive Plant", builder: "Auto Manufacturing" }, { type: "Assembly Line", builder: "Production Builders" }] },
+  { plotId: 14, owner: "Govt", soilType: "Sandy", area: 1350, suitability: "Residential", x: 200, y: 350, width: 135, height: 100, recommendations: [{ type: "Smart City Development", builder: "Future Builders" }, { type: "Sustainable Community", builder: "Eco Developers" }] },
+  { plotId: 15, owner: "Private", soilType: "Loamy", area: 850, suitability: "Industrial", x: 380, y: 350, width: 85, height: 100, recommendations: [{ type: "Cold Storage", builder: "Storage Solutions" }, { type: "Refrigeration Plant", builder: "CoolTech Industries" }] },
+  { plotId: 16, owner: "Govt", soilType: "Clay", area: 1150, suitability: "Factory", x: 500, y: 350, width: 115, height: 100, recommendations: [{ type: "Recycling Plant", builder: "Waste Management Corp" }, { type: "Processing Facility", builder: "Environmental Builders" }] },
+  { plotId: 17, owner: "Private", soilType: "Sandy", area: 1450, suitability: "Residential", x: 650, y: 350, width: 145, height: 100, recommendations: [{ type: "Resort Development", builder: "Hospitality Builders" }, { type: "Vacation Homes", builder: "Leisure Developers" }] },
+  { plotId: 18, owner: "Govt", soilType: "Loamy", area: 900, suitability: "Industrial", x: 830, y: 350, width: 90, height: 100, recommendations: [{ type: "Power Plant", builder: "Energy Solutions" }, { type: "Renewable Energy Farm", builder: "Clean Power Co." }] },
+
+  // Row 4 (Plots 19-24)
+  { plotId: 19, owner: "Private", soilType: "Clay", area: 1200, suitability: "Factory", x: 50, y: 500, width: 120, height: 100, recommendations: [{ type: "Steel Mill", builder: "Metal Industries" }, { type: "Foundry", builder: "Heavy Manufacturing" }] },
+  { plotId: 20, owner: "Govt", soilType: "Sandy", area: 1000, suitability: "Residential", x: 200, y: 500, width: 100, height: 100, recommendations: [{ type: "Military Housing", builder: "Defense Contractors" }, { type: "Government Quarters", builder: "Public Sector Builders" }] },
+  { plotId: 21, owner: "Private", soilType: "Loamy", area: 1300, suitability: "Industrial", x: 350, y: 500, width: 130, height: 100, recommendations: [{ type: "Port Facility", builder: "Maritime Builders" }, { type: "Shipping Terminal", builder: "Logistics Developers" }] },
+  { plotId: 22, owner: "Govt", soilType: "Clay", area: 800, suitability: "Factory", x: 530, y: 500, width: 80, height: 100, recommendations: [{ type: "Water Treatment Plant", builder: "Utilities Corp" }, { type: "Sewage Treatment", builder: "Infrastructure Builders" }] },
+  { plotId: 23, owner: "Private", soilType: "Sandy", area: 1500, suitability: "Residential", x: 650, y: 500, width: 150, height: 100, recommendations: [{ type: "Golf Course Community", builder: "Luxury Developers" }, { type: "Country Club", builder: "Elite Builders" }] },
+  { plotId: 24, owner: "Govt", soilType: "Loamy", area: 1100, suitability: "Industrial", x: 830, y: 500, width: 110, height: 100, recommendations: [{ type: "Railway Station", builder: "Transport Infrastructure" }, { type: "Freight Terminal", builder: "Railway Developers" }] },
+
+  // Row 5 (Plots 25-30)
+  { plotId: 25, owner: "Private", soilType: "Clay", area: 950, suitability: "Factory", x: 50, y: 650, width: 95, height: 100, recommendations: [{ type: "Brewery", builder: "Beverage Industries" }, { type: "Distillery", builder: "Spirits Manufacturing" }] },
+  { plotId: 26, owner: "Govt", soilType: "Sandy", area: 1400, suitability: "Residential", x: 200, y: 650, width: 140, height: 100, recommendations: [{ type: "Hospital Complex", builder: "Healthcare Builders" }, { type: "Medical Center", builder: "Health Infrastructure" }] },
+  { plotId: 27, owner: "Private", soilType: "Loamy", area: 1050, suitability: "Industrial", x: 380, y: 650, width: 105, height: 100, recommendations: [{ type: "Airport Cargo", builder: "Aviation Logistics" }, { type: "Freight Hub", builder: "Airport Developers" }] },
+  { plotId: 28, owner: "Govt", soilType: "Clay", area: 1200, suitability: "Factory", x: 530, y: 650, width: 120, height: 100, recommendations: [{ type: "Government Printing", builder: "Public Sector Industries" }, { type: "Documentation Center", builder: "Government Services" }] },
+  { plotId: 29, owner: "Private", soilType: "Sandy", area: 1350, suitability: "Residential", x: 700, y: 650, width: 135, height: 100, recommendations: [{ type: "University Campus", builder: "Education Infrastructure" }, { type: "Research Institute", builder: "Academic Developers" }] },
+  { plotId: 30, owner: "Govt", soilType: "Loamy", area: 1000, suitability: "Industrial", x: 880, y: 650, width: 100, height: 100, recommendations: [{ type: "Border Checkpoint", builder: "Security Infrastructure" }, { type: "Customs Facility", builder: "Government Builders" }] }
+];
