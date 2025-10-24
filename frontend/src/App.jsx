@@ -1,19 +1,15 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
-import Home from './pages/Home';
-import PlotDetailsPage from './pages/PlotDetailsPage';
-import About from './pages/About';
-import Navigation from './components/Navigation';
-import './index.css';
+import { store } from './app/store.js';
+import Home from './pages/Home.jsx';
+import PlotDetailsPage from './pages/PlotDetailsPage.jsx';
+import About from './pages/About.jsx';
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <div className="App">
-          <Navigation />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/plot/:plotId" element={<PlotDetailsPage />} />
@@ -26,3 +22,4 @@ function App() {
 }
 
 export default App;
+

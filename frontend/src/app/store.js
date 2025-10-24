@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import plotsReducer from '../features/plots/plotsSlice';
+import plotsReducer from '../features/plots/plotsSlice.js';
 
 export const store = configureStore({
   reducer: {
@@ -7,4 +7,3 @@ export const store = configureStore({
   },
 });
 
-export default store;
