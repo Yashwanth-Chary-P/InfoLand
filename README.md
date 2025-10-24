@@ -47,6 +47,3 @@ This project is built entirely as a **frontend prototype** with **dummy data** s
 - **React Router DOM** – Page routing  
 
 ---
-
-n to the **“Commit new file”** section:  
-   - Add a commit message like:  
