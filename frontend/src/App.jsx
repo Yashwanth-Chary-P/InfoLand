@@ -9,6 +9,7 @@ import MapSelection from './pages/MapSelection.jsx';
 import PlotDetailsPage from './pages/PlotDetailsPage.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
+import PlotMap from './pages/PlotMap.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/cards" element={<CardSelection />} />
               <Route path="/map" element={<MapSelection />} />
+              <Route path="/plot" element={<PlotMap />} />
               <Route path="/plot/:plotId" element={<PlotDetailsPage />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
