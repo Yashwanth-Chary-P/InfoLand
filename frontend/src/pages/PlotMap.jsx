@@ -1,20 +1,17 @@
-
-
-
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
-    MapContainer,
-    TileLayer,
-    Polygon,
-    Popup,
-    useMapEvents,
+  MapContainer,
+  TileLayer,
+  Polygon,
+  useMapEvents,
 } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
-import "./CSS/PlotMap.css"; // Import the CSS file
+import "./CSS/PlotMap.css";
 
-// --- Fetch real land polygon from Overpass API ---
+// --- Async polygon fetch ---
 async function fetchLandPolygon(lat, lon) {
-    const query = `
+  const query = `
     [out:json];
     (
       way(around:10, ${lat}, ${lon})["landuse"];
@@ -23,187 +20,175 @@ async function fetchLandPolygon(lat, lon) {
     (._;>;);
     out body;
   `;
+  try {
     const response = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        body: query,
+      method: "POST",
+      body: query,
     });
     const data = await response.json();
 
-    if (!data.elements || data.elements.length === 0) return null;
+    if (!data.elements?.length) return null;
 
     const nodes = {};
-    data.elements.forEach((el) => {
-        if (el.type === "node") {
-            nodes[el.id] = [el.lat, el.lon];
-        }
-    });
+    for (const el of data.elements) {
+      if (el.type === "node") nodes[el.id] = [el.lat, el.lon];
+    }
 
-    const ways = data.elements.filter((el) => el.type === "way" && el.nodes);
-    if (ways.length === 0) return null;
-
-    const coords = ways[0].nodes.map((nodeId) => nodes[nodeId]);
-    return coords;
+    const way = data.elements.find((el) => el.type === "way" && el.nodes);
+    return way ? way.nodes.map((id) => nodes[id]) : null;
+  } catch (err) {
+    console.error("Polygon fetch error:", err);
+    return null;
+  }
 }
 
-function MapClickHandler({ onPolygon }) {
-    useMapEvents({
-        click: async (e) => {
-            const { lat, lng } = e.latlng;
-            const polygon = await fetchLandPolygon(lat, lng);
-            if (polygon) {
-                onPolygon(polygon, lat, lng);
-            } else {
-                alert("No land boundary found for this area.");
-            }
-        },
-    });
-    return null;
+function MapClickHandler({ onClick }) {
+  useMapEvents({
+    click: (e) => onClick(e.latlng),
+  });
+  return null;
 }
 
 const PlotMap = () => {
-    const [polygon, setPolygon] = useState([]);
-    const [landDetails, setLandDetails] = useState(null);
-    const [showPlans, setShowPlans] = useState(false);
-    const [center, setCenter] = useState([17.385, 78.486]); // Default: Hyderabad
+  const [polygon, setPolygon] = useState([]);
+  const [landDetails, setLandDetails] = useState(null);
+  const [center, setCenter] = useState([17.385, 78.486]); // Hyderabad
+  const [loading, setLoading] = useState(false);
 
-    const handlePolygonSelect = (coords, lat, lng) => {
-        setPolygon(coords);
-        setLandDetails({
-            name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
-            area: "450 sq. yards",
-            owner: "Yashwanth Chary",
-            type: "Residential",
-            registrationYear: 2021,
-            surveyNo: "123/B",
-            village: "Gachibowli",
-            district: "Rangareddy",
-            verifiedStatus: "Not Verified",
-        });
-        setCenter([lat, lng]);
-        setShowPlans(false);
-    };
+  const navigate = useNavigate();
 
-    const plans = [
-        {
-            name: "Basic",
-            price: "₹499",
-            includes: ["EC, Tax, Govt Record Check"],
-        },
-        {
-            name: "Standard",
-            price: "₹1,999",
-            includes: ["Basic + Title Check, Lawyer Opinion"],
-        },
-        {
-            name: "Premium",
-            price: "₹4,999",
-            includes: ["Standard + Physical Visit, Dispute"],
-        },
-    ];
+  const handleMapClick = useCallback(async ({ lat, lng }) => {
+    setLoading(true);
 
-    return (
-        <div style={{ height: "100vh", width: "100%" }}>
-            <MapContainer
-                center={center}
-                zoom={18}
-                style={{ height: "100%", width: "100%" }}
+    // Temporary info while loading
+    setLandDetails({
+      name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
+      area: "Fetching data...",
+      owner: "Fetching...",
+      type: "Loading...",
+      registrationYear: "-",
+      surveyNo: "-",
+      village: "-",
+      district: "-",
+      verifiedStatus: "Loading...",
+    });
+    setCenter([lat, lng]);
+
+    const coords = await fetchLandPolygon(lat, lng);
+    if (coords) {
+      setPolygon(coords);
+      setLandDetails({
+        name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
+        area: "450 sq. yards",
+        owner: "Yashwanth Chary",
+        type: "Residential",
+        registrationYear: 2021,
+        surveyNo: "123/B",
+        village: "Gachibowli",
+        district: "Rangareddy",
+        verifiedStatus: "Not Verified",
+      });
+    } else {
+      setPolygon([]);
+      setLandDetails({
+        name: "No Land Found",
+        area: "N/A",
+        owner: "-",
+        type: "-",
+        registrationYear: "-",
+        surveyNo: "-",
+        village: "-",
+        district: "-",
+        verifiedStatus: "Unavailable",
+      });
+    }
+
+    setLoading(false);
+  }, []);
+
+  return (
+    <div
+      className="flex w-full"
+      style={{ height: "calc(100vh - 64px)", margin: "0 20px" }}
+    >
+      {/* 2/3 Map Section */}
+      <div className="w-2/3 rounded-lg overflow-hidden shadow-md">
+        <MapContainer
+          center={center}
+          zoom={18}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            attribution="&copy; OpenStreetMap contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MapClickHandler onClick={handleMapClick} />
+
+          {polygon.length > 0 && (
+            <Polygon
+              positions={polygon}
+              pathOptions={{
+                color: "#2563eb",
+                fillColor: "#60a5fa",
+                fillOpacity: 0.5,
+              }}
+            />
+          )}
+        </MapContainer>
+      </div>
+
+      {/* 1/3 Details Section */}
+      <div className="w-1/3 bg-white border-l shadow-xl p-6 overflow-y-auto rounded-lg ml-4">
+        {!landDetails ? (
+          <div className="h-full flex flex-col justify-center items-center text-gray-600">
+            <h2 className="text-2xl font-semibold mb-2">Land Information</h2>
+            <p className="text-center">
+              Click on any plot on the map to view detailed property
+              information, ownership, and verification plans.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-between items-center border-b pb-3 mb-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                {landDetails.name}
+              </h3>
+              <button
+                onClick={() => setLandDetails(null)}
+                className="text-gray-500 hover:text-red-500 transition"
+              >
+                ✕
+              </button>
+            </div>
+
+            {loading ? (
+              <p className="text-blue-500">Loading property details...</p>
+            ) : (
+              <div className="space-y-3 text-gray-700">
+                <p><b>Owner:</b> {landDetails.owner}</p>
+                <p><b>Survey No:</b> {landDetails.surveyNo}</p>
+                <p><b>Area:</b> {landDetails.area}</p>
+                <p><b>Village:</b> {landDetails.village}</p>
+                <p><b>District:</b> {landDetails.district}</p>
+                <p><b>Type:</b> {landDetails.type}</p>
+                <p><b>Registration:</b> {landDetails.registrationYear}</p>
+                <p className="text-red-600 font-medium">
+                  <b>Status:</b> {landDetails.verifiedStatus}
+                </p>
+              </div>
+            )}
+
+            <button
+              onClick={() => navigate("/plans")}
+              className="w-full mt-6 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition"
             >
-                <TileLayer
-                    attribution="&copy; OpenStreetMap contributors"
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <MapClickHandler onPolygon={handlePolygonSelect} />
-
-                {polygon.length > 0 && (
-                    <Polygon
-                        positions={polygon}
-                        pathOptions={{
-                            color: "#2563eb",
-                            fillColor: "#60a5fa",
-                            fillOpacity: 0.5,
-                        }}
-                    >
-                        <Popup>
-                            <div
-
-                                className="popup-container"
-
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {landDetails && (
-                                    <div className="popup-details">
-                                        <h3>{landDetails.name}</h3>
-                                        <p>
-                                            <b>Owner:</b> {landDetails.owner}
-                                        </p>
-                                        <p>
-                                            <b>Survey No:</b> {landDetails.surveyNo}
-                                        </p>
-                                        <p>
-                                            <b>Area:</b> {landDetails.area}
-                                        </p>
-                                        <p>
-                                            <b>Village:</b> {landDetails.village}
-                                        </p>
-                                        <p>
-                                            <b>District:</b> {landDetails.district}
-                                        </p>
-                                        <p>
-                                            <b>Type:</b> {landDetails.type}
-                                        </p>
-                                        <p>
-                                            <b>Registration:</b> {landDetails.registrationYear}
-                                        </p>
-                                        <p style={{ color: "#dc2626" }}>
-                                            <b>Status:</b> {landDetails.verifiedStatus}
-                                        </p>
-
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setShowPlans((prev) => !prev);
-                                            }}
-                                            className={`btn-toggle-plans ${showPlans ? "hide" : ""}`}
-                                        >
-                                            {showPlans
-                                                ? "Hide Verification Plans"
-                                                : "View Background Verification"}
-                                        </button>
-                                    </div>
-                                )}
-
-                                {/* Background Verification Plans */}
-                                {showPlans && (
-                                    <div className="plans-section">
-                                        <h4>Background Analysis Plans</h4>
-                                        <div className="plans-container">
-                                            {plans.map((plan, index) => (
-                                                <div key={index} className="plan-card">
-                                                    <div className="plan-header">
-                                                        <b className="plan-name">{plan.name}</b>
-                                                        <span className="plan-price">{plan.price}</span>
-                                                    </div>
-                                                    <ul className="plan-features">
-                                                        {plan.includes.map((item, i) => (
-                                                            <li key={i}>{item}</li>
-                                                        ))}
-                                                    </ul>
-                                                    <button className="btn-select-plan">
-                                                        Select Plan
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </Popup>
-                    </Polygon>
-                )}
-            </MapContainer>
-        </div >
-    );
+              Background Verification
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default PlotMap;

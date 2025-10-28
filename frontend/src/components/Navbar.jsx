@@ -17,9 +17,9 @@ const Navbar = () => {
   const navItems = [
     { path: "/", label: "Home", icon: Home },
     { path: "/stats", label: "Stats", icon: BarChart3 },
-    { path: "/plans", label: "Plans", icon: ClipboardList },
     { path: "/whyus", label: "Why Us", icon: Star },
     { path: "/lawyers", label: "Lawyers", icon: Scale },
+    { path: "/plans", label: "Plans", icon: ClipboardList },
     { path: '/about', label: 'About', icon: Info },
     { path: '/contact', label: 'Contact', icon: Mail },
   ];
