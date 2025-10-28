@@ -68,6 +68,21 @@ const Home = () => {
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
+
+            <Link 
+              to="/plot" 
+              className="group p-8 rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 w-64 text-center hover:scale-105"
+            >
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
+                <Map className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Select From Map</h3>
+              <p className="text-gray-500 text-sm mb-4">Interactive map with clickable plot areas</p>
+              <div className="flex items-center justify-center text-green-600 font-medium">
+                <span>View Map</span>
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>

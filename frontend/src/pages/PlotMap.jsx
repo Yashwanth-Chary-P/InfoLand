@@ -10,7 +10,7 @@ import {
     useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "./PlotMap.css"; // Import the CSS file
+import "./CSS/PlotMap.css"; // Import the CSS file
 
 // --- Fetch real land polygon from Overpass API ---
 async function fetchLandPolygon(lat, lon) {
