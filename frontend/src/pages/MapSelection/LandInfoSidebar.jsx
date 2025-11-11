@@ -1,6 +1,6 @@
 // src/components/LandInfoSidebar.jsx
 import React from "react";
-import "./CSS/Sidebar.css";
+import "../CSS/Sidebar.css";
 
 const LandInfoSidebar = ({ landDetails, showPlans, setShowPlans, plans }) => {
   if (!landDetails) return null;

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { Quote } from "lucide-react";
 
 const opinions = [
@@ -26,7 +26,7 @@ export default function LawyerPage() {
   return (
     <div className="pt-24 pb-16 bg-gradient-to-tr from-yellow-50 via-amber-100 to-orange-50 min-h-screen text-center">
       {/* Header */}
-      <motion.h2
+      <h2
         className="text-4xl font-extrabold text-gray-800 mb-8 relative inline-block"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function LawyerPage() {
       >
         <span className="relative z-10">Lawyers’ Opinion ⚖️</span>
         <span className="absolute bottom-0 left-0 w-full h-2 bg-yellow-300 rounded-full -z-0"></span>
-      </motion.h2>
+      </h2>
 
       <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-12">
         Hear what top property lawyers have to say about <b>InfoLand</b> and our
@@ -44,7 +44,7 @@ export default function LawyerPage() {
       {/* Opinion Cards */}
       <div className="flex flex-wrap justify-center gap-8 px-4">
         {opinions.map((op, i) => (
-          <motion.div
+          <div
             key={i}
             whileHover={{ y: -8, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
@@ -62,7 +62,7 @@ export default function LawyerPage() {
               </h3>
               <p className="text-sm text-amber-600">{op.title}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 

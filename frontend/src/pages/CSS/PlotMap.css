@@ -182,3 +182,11 @@
 .plan-card:nth-child(3) {
   background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
 }
+
+
+.map-wrapper {
+  height: calc(100vh - 20px); /* adjust if your Navbar height is different */
+  margin-top: 70px; 
+  padding-top: 0;
+  overflow: hidden;
+}

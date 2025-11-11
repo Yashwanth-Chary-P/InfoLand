@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 
 const plans = [
   {
@@ -56,14 +56,14 @@ export default function PlansSection() {
       id="plans"
       className="pt-24 pb-20 bg-gradient-to-bl from-sky-50 to-indigo-100 min-h-screen text-center"
     >
-      <motion.h2
+      <h2
         className="text-5xl font-extrabold text-gray-800 mb-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         Choose Your Verification Plan
-      </motion.h2>
+      </h2>
 
       <p className="text-gray-600 mb-16 text-lg max-w-2xl mx-auto leading-relaxed">
         Get authentic, expert-verified land reports powered by government data and
@@ -72,7 +72,7 @@ export default function PlansSection() {
 
       <div className="flex flex-wrap justify-center gap-10 px-4">
         {plans.map((p, i) => (
-          <motion.div
+          <div
             key={i}
             whileHover={{ y: -8, scale: 1.03 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
@@ -105,14 +105,14 @@ export default function PlansSection() {
                 ))}
               </ul>
 
-              <motion.button
+              <button
                 whileTap={{ scale: 0.95 }}
                 className="w-full bg-blue-700 text-white rounded-full px-6 py-3 text-lg font-semibold shadow-md hover:bg-blue-800 hover:shadow-lg transition"
               >
                 Select Plan
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 

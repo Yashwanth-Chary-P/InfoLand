@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { ShieldCheck, MapPin, DollarSign, FileCheck } from "lucide-react";
 
 const reasons = [
@@ -31,14 +31,14 @@ const reasons = [
 export default function WhyUsPage() {
   return (
     <div className="pt-24 pb-16 bg-gradient-to-r from-purple-50 via-pink-50 to-rose-100 min-h-screen text-center">
-      <motion.h2
+      <h2
         className="text-4xl font-extrabold text-gray-800 mb-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         Why Choose <span className="text-purple-600">InfoLand?</span> 🌟
-      </motion.h2>
+      </h2>
 
       <p className="text-gray-600 mb-12 text-lg max-w-2xl mx-auto">
         We’re redefining land transactions with trust, technology, and transparency.
@@ -47,7 +47,7 @@ export default function WhyUsPage() {
 
       <div className="flex flex-wrap justify-center gap-8 px-4">
         {reasons.map((r, i) => (
-          <motion.div
+          <div
             key={i}
             whileHover={{ y: -8, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
@@ -63,7 +63,7 @@ export default function WhyUsPage() {
               </div>
               <p className="text-gray-700 leading-relaxed">{r.desc}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 

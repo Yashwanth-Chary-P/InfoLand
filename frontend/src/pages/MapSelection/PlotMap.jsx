@@ -9,37 +9,28 @@ import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 import "../CSS/PlotMap.css";
 
-// --- Async polygon fetch ---
-async function fetchLandPolygon(lat, lon) {
-  const query = `
-    [out:json];
-    (
-      way(around:10, ${lat}, ${lon})["landuse"];
-      way(around:10, ${lat}, ${lon})["building"];
-    );
-    (._;>;);
-    out body;
-  `;
-  try {
-    const response = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      body: query,
-    });
-    const data = await response.json();
+import { useSelector, useDispatch } from "react-redux";
+import { fetchDetailedPlotById } from "../../features/detailedPlots/detailedPlotsSlice";
 
-    if (!data.elements?.length) return null;
+/* -------------------------------------------
+   POINT-IN-POLYGON DETECTION (No mismatching)
+-------------------------------------------- */
+function isPointInsidePolygon(lat, lng, polygon) {
+  let inside = false;
 
-    const nodes = {};
-    for (const el of data.elements) {
-      if (el.type === "node") nodes[el.id] = [el.lat, el.lon];
-    }
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const yi = polygon[i][1];
+    const xi = polygon[i][0];
+    const yj = polygon[j][1];
+    const xj = polygon[j][0];
 
-    const way = data.elements.find((el) => el.type === "way" && el.nodes);
-    return way ? way.nodes.map((id) => nodes[id]) : null;
-  } catch (err) {
-    console.error("Polygon fetch error:", err);
-    return null;
+    const intersect =
+      yi > lng !== yj > lng &&
+      lat < ((xj - xi) * (lng - yi)) / (yj - yi) + xi;
+
+    if (intersect) inside = !inside;
   }
+  return inside;
 }
 
 function MapClickHandler({ onClick }) {
@@ -52,84 +43,121 @@ function MapClickHandler({ onClick }) {
 const PlotMap = () => {
   const [polygon, setPolygon] = useState([]);
   const [landDetails, setLandDetails] = useState(null);
-  const [center, setCenter] = useState([17.385, 78.486]); // Hyderabad
+  const [center, setCenter] = useState([17.385, 78.486]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleMapClick = useCallback(async ({ lat, lng }) => {
-    setLoading(true);
+  const detailedPlots = useSelector((state) => state.detailedPlots.list);
 
-    // Temporary info while loading
-    setLandDetails({
-      name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
-      area: "Fetching data...",
-      owner: "Fetching...",
-      type: "Loading...",
-      registrationYear: "-",
-      surveyNo: "-",
-      village: "-",
-      district: "-",
-      verifiedStatus: "Loading...",
-    });
-    setCenter([lat, lng]);
+  /* ------------------------------
+      MAP CLICK HANDLER (Correct)
+  ------------------------------ */
+  const handleMapClick = useCallback(
+    async ({ lat, lng }) => {
+      setLandDetails(null);
+      setLoading(true);
 
-    const coords = await fetchLandPolygon(lat, lng);
-    if (coords) {
-      setPolygon(coords);
+      // 1️⃣ Detect exactly which polygon contains the click
+      const matchedPlot = detailedPlots.find((plot) =>
+        isPointInsidePolygon(lat, lng, plot.Coordinates)
+      );
+
+      if (!matchedPlot) {
+        setPolygon([]);
+        setLandDetails({
+          name: "No Plot Found",
+          owner: "-",
+          surveyNo: "-",
+          area: "-",
+          village: "-",
+          district: "-",
+          type: "-",
+          registrationYear: "-",
+          verifiedStatus: "Unavailable",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // 2️⃣ Fetch accurate backend data ALWAYS (no mismatching)
+      const response = await dispatch(fetchDetailedPlotById(matchedPlot.id));
+      const data = response.payload;
+
+      // 3️⃣ Fix polygon auto-close
+      const poly = data.Coordinates;
+      const first = poly[0];
+      const last = poly[poly.length - 1];
+      const closed =
+        first[0] === last[0] && first[1] === last[1]
+          ? poly
+          : [...poly, first];
+
+      setPolygon(closed);
+
+      // 4️⃣ Update sidebar
       setLandDetails({
-        name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
-        area: "450 sq. yards",
-        owner: "Harsha Vardhan",
-        type: "Residential",
-        registrationYear: 2021,
-        surveyNo: "123/B",
-        village: "Gachibowli",
-        district: "Rangareddy",
-        verifiedStatus: "Not Verified",
+        name: `Plot ${data.id}`,
+        owner: data.Owner,
+        surveyNo: data["Survey No"],
+        area: data.Area,
+        village: data.Village,
+        district: data.District,
+        type: data.Type,
+        registrationYear: data["Registration Year"],
+        verifiedStatus: data.Status,
       });
-    } else {
-      setPolygon([]);
-      setLandDetails({
-        name: "No Land Found",
-        area: "N/A",
-        owner: "-",
-        type: "-",
-        registrationYear: "-",
-        surveyNo: "-",
-        village: "-",
-        district: "-",
-        verifiedStatus: "Unavailable",
-      });
-    }
 
-    setLoading(false);
-  }, []);
+      setCenter([lat, lng]);
+      setLoading(false);
+    },
+    [detailedPlots, dispatch]
+  );
 
   return (
-    <div
-      className="flex w-full"
-      style={{ height: "calc(100vh - 64px)", margin: "0 20px" }}
-    >
-      {/* 2/3 Map Section */}
+    <div className="flex w-full map-wrapper mx-5">
+      {/* ---------------- MAP (LEFT) ---------------- */}
       <div className="w-2/3 rounded-lg overflow-hidden shadow-md">
-        <MapContainer
-          center={center}
-          zoom={18}
-          style={{ height: "100%", width: "100%" }}
-        >
+        <MapContainer center={center} zoom={18} style={{ height: "100%", width: "100%" }}>
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+
+          {/* Draw ALL plots in light blue */}
+          {detailedPlots.map((plot) => {
+            const coords = plot.Coordinates;
+            const first = coords[0];
+            const last = coords[coords.length - 1];
+
+            const closed =
+              first[0] === last[0] && first[1] === last[1]
+                ? coords
+                : [...coords, first];
+
+            return (
+              <Polygon
+                key={plot.id}
+                positions={closed}
+                pathOptions={{
+                  color: "#3b82f6",
+                  fillColor: "#93c5fd",
+                  fillOpacity: 0.3,
+                }}
+              />
+            );
+          })}
+
           <MapClickHandler onClick={handleMapClick} />
 
+          {/* Highlight selected polygon */}
           {polygon.length > 0 && (
             <Polygon
               positions={polygon}
               pathOptions={{
-                color: "#2563eb",
-                fillColor: "#60a5fa",
+                color: "#1e3a8a",
+                fillColor: "#3b82f6",
                 fillOpacity: 0.5,
               }}
             />
@@ -137,14 +165,13 @@ const PlotMap = () => {
         </MapContainer>
       </div>
 
-      {/* 1/3 Details Section */}
+      {/* ---------------- SIDEBAR (RIGHT) ---------------- */}
       <div className="w-1/3 bg-white border-l shadow-xl p-6 overflow-y-auto rounded-lg ml-4">
         {!landDetails ? (
           <div className="h-full flex flex-col justify-center items-center text-gray-600">
             <h2 className="text-2xl font-semibold mb-2">Land Information</h2>
             <p className="text-center">
-              Click on any plot on the map to view detailed property
-              information, ownership, and verification plans.
+              Click on any plot on the map to view detailed property information.
             </p>
           </div>
         ) : (

@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './app/store.js';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Home from './pages/Home/Home.jsx';
@@ -15,34 +13,43 @@ import PlansPage from './pages/PlansPage.jsx';
 import WhyUsPage from './pages/Home/WhyUsPage.jsx';
 import LawyerPage from './pages/Home/LawyerPage.jsx';
 
-function App() {
-  return (
-    <Provider store={store}>
-      <Router>
-        <div className="App min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/cards" element={<CardSelection />} />
-              <Route path="/map" element={<MapSelection />} />
-              <Route path="/plot" element={<PlotMap />} />
-              <Route path="/plot/:plotId" element={<PlotDetailsPage />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPlots } from './features/plots/plotsSlice.js';
+import { fetchDetailedPlots } from "./features/detailedPlots/detailedPlotsSlice";
 
-              <Route path="/stats" element={<StatsPage />} />
-              <Route path="/plans" element={<PlansPage />} />
-              <Route path="/whyus" element={<WhyUsPage />} />
-              <Route path="/lawyers" element={<LawyerPage />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </Provider>
+function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPlots());   // Load backend data ONCE
+    dispatch(fetchDetailedPlots());  
+  }, [dispatch]);
+
+  return (
+    <Router>
+      <div className="App min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cards" element={<CardSelection />} />
+            <Route path="/map" element={<MapSelection />} />
+            <Route path="/plot" element={<PlotMap />} />
+            <Route path="/plot/:plotId" element={<PlotDetailsPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/plans" element={<PlansPage />} />
+            <Route path="/whyus" element={<WhyUsPage />} />
+            <Route path="/lawyers" element={<LawyerPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
 export default App;
-

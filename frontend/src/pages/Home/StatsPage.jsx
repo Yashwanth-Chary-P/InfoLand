@@ -1,21 +1,21 @@
-import { motion } from "framer-motion";
+
 import { ShieldCheck, BarChart3, AlertTriangle } from "lucide-react";
 
 export default function StatsPage() {
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-green-50 via-teal-50 to-emerald-100 min-h-screen flex flex-col items-center">
       {/* Title */}
-      <motion.h2
+      <h2
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="text-4xl font-extrabold text-gray-800 mb-10 tracking-tight"
       >
         Land Transaction Insights 📊
-      </motion.h2>
+      </h2>
 
       {/* Intro Card */}
-      <motion.div
+      <div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -30,12 +30,12 @@ export default function StatsPage() {
         <p className="text-gray-700 mt-4 text-lg">
           <span className="font-semibold text-teal-700">InfoLand</span> empowers buyers with verified data, reducing fraud risk by up to <b>85%</b>.
         </p>
-      </motion.div>
+      </div>
 
       {/* Animated Stats Cards */}
       <div className="mt-12 grid gap-8 md:grid-cols-3 px-6 max-w-6xl">
         {/* Card 1 */}
-        <motion.div
+        <div
           whileHover={{ scale: 1.05 }}
           className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl p-6 shadow-lg flex flex-col items-center"
         >
@@ -44,10 +44,10 @@ export default function StatsPage() {
           <p className="text-sm opacity-90 text-center">
             Verified land records analyzed yearly to ensure reliability.
           </p>
-        </motion.div>
+        </div>
 
         {/* Card 2 */}
-        <motion.div
+        <div
           whileHover={{ scale: 1.05 }}
           className="bg-gradient-to-br from-red-500 to-orange-400 text-white rounded-2xl p-6 shadow-lg flex flex-col items-center"
         >
@@ -56,10 +56,10 @@ export default function StatsPage() {
           <p className="text-sm opacity-90 text-center">
             Ownership disputes and fake documentation cases tracked and prevented.
           </p>
-        </motion.div>
+        </div>
 
         {/* Card 3 */}
-        <motion.div
+        <div
           whileHover={{ scale: 1.05 }}
           className="bg-gradient-to-br from-green-600 to-emerald-500 text-white rounded-2xl p-6 shadow-lg flex flex-col items-center"
         >
@@ -68,18 +68,18 @@ export default function StatsPage() {
           <p className="text-sm opacity-90 text-center">
             Verified through InfoLand’s AI + legal experts to ensure 100% confidence.
           </p>
-        </motion.div>
+        </div>
       </div>
 
       {/* Footer tagline */}
-      <motion.p
+      <p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
         className="mt-12 text-gray-700 font-medium italic"
       >
         “Transparency today builds trust for tomorrow.” 🌱
-      </motion.p>
+      </p>
     </div>
   );
 }
