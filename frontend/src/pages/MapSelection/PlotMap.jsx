@@ -7,7 +7,7 @@ import {
 } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
-import "./CSS/PlotMap.css";
+import "../CSS/PlotMap.css";
 
 // --- Async polygon fetch ---
 async function fetchLandPolygon(lat, lon) {
@@ -80,7 +80,7 @@ const PlotMap = () => {
       setLandDetails({
         name: `Plot near (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
         area: "450 sq. yards",
-        owner: "Yashwanth Chary",
+        owner: "Harsha Vardhan",
         type: "Residential",
         registrationYear: 2021,
         surveyNo: "123/B",

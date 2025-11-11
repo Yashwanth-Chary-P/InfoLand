@@ -3,17 +3,17 @@ import { Provider } from 'react-redux';
 import { store } from './app/store.js';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
-import Home from './pages/Home.jsx';
-import CardSelection from './pages/CardSelection.jsx';
-import MapSelection from './pages/MapSelection.jsx';
-import PlotDetailsPage from './pages/PlotDetailsPage.jsx';
+import Home from './pages/Home/Home.jsx';
+import CardSelection from './pages/CardSelection/CardSelection.jsx';
+import MapSelection from './pages/ColonyMap/MapSelection.jsx';
+import PlotDetailsPage from './components/PlotDetailsPage.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
-import PlotMap from './pages/PlotMap.jsx';
-import StatsPage from './pages/StatsPage.jsx';
+import PlotMap from './pages/MapSelection/PlotMap.jsx';
+import StatsPage from './pages/Home/StatsPage.jsx';
 import PlansPage from './pages/PlansPage.jsx';
-import WhyUsPage from './pages/WhyUsPage.jsx';
-import LawyerPage from './pages/LawyerPage.jsx';
+import WhyUsPage from './pages/Home/WhyUsPage.jsx';
+import LawyerPage from './pages/Home/LawyerPage.jsx';
 
 function App() {
   return (

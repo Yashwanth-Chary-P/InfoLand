@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import PlotGrid from '../components/PlotGrid.jsx';
+import PlotGrid from '../../components/PlotGrid.jsx';
 
 const MapSelection = () => {
   return (
