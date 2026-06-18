@@ -27,3 +27,70 @@ Many land administration and mapping tools are complex and heavyweight. infoLand
 - React frontend using Vite, with map integration (Leaflet), Redux Toolkit slices for plots, and Firebase authentication scaffolding.
 - Modern front-end tooling: Tailwind CSS, Vite, and ESLint.
 - Backend dotenv support and MongoDB connectivity.
+
+## Prerequisites
+
+- Node.js (v16+ recommended)
+- npm or yarn
+- MongoDB instance (local or Atlas)
+- (Optional) Firebase project for frontend authentication
+
+## Installation
+
+1. Clone the repository:
+
+	 git clone <repo-url>
+	 cd infoLand
+
+2. Install dependencies for backend and frontend:
+
+	 # Backend
+	 cd backend && npm install
+
+	 # Frontend
+	 cd ../frontend && npm install
+
+3. Create environment variable files as needed (see Environment Variables below).
+
+## Environment Variables
+
+This project expects environment variables for backend and frontend.
+
+- Backend (`backend/.env`):
+
+	- `MONGO_URI` — MongoDB connection string (required)
+	- `PORT` — optional server port (default 5000)
+
+- Frontend (Vite `.env` or `.env.local` in `frontend/`):
+
+	- `VITE_API_KEY` — Firebase API key
+	- `VITE_AUTH_DOMAIN` — Firebase auth domain
+	- `VITE_PROJECT_ID` — Firebase project ID
+	- `VITE_STORAGE_BUCKET` — Firebase storage bucket
+	- `VITE_MESSAGING_SENDERID` — Firebase messaging sender id
+	- `VITE_APPID` — Firebase app id
+
+These keys are referenced by `frontend/src/firebase/firebase.config.js` and the backend reads `MONGO_URI` from `process.env` in `backend/server.js`.
+
+## Local development
+
+- Start the backend server (from `backend/`):
+
+	npm run dev
+
+- Start the frontend (from `frontend/`):
+
+	npm run dev
+
+Both servers can run concurrently; frontend expects the backend API under `/api/plots/*` (relative path used in the app).
+
+## Build & Run (Production)
+
+- Build frontend (from `frontend/`):
+
+	npm run build
+
+- Serve backend (from `backend/`):
+
+	npm start
+
