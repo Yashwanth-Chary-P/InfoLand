@@ -142,4 +142,93 @@ infoLand/
 - `frontend/src/pages` & `frontend/src/components` — UI pages (Home, MapSelection, PlotDetails) and shared components (Navbar, Footer, PlotCard).
 - `frontend/src/features` — Redux slices for plot data (listed as `plots` and `detailedPlots`).
 
+## API Reference
+
+All backend API routes are mounted under `/api/plots` (see `backend/server.js`). The project exposes two routers:
+
+- `/api/plots/basic` — basic plot summaries (uses `PlotBasic` model)
+- `/api/plots/detailed` — detailed plot records including coordinate geometry (uses `PlotDetailed` model)
+
+### Endpoints
+
+- GET `/api/plots/basic` — List all basic plots
+
+	Response (200): JSON array of `PlotBasic` objects. Fields:
+
+	- `plotId` (Number)
+	- `owner` (String)
+	- `soilType` (String)
+	- `area` (Number)
+	- `suitability` (String)
+	- `recommendations` (Array of { type, builder })
+
+	Example response:
+
+	```json
+	[
+		{
+			"plotId": 101,
+			"owner": "Alice",
+			"soilType": "Loam",
+			"area": 2500,
+			"suitability": "High",
+			"recommendations": [{ "type": "Crop", "builder": "Local" }]
+		}
+	]
+	```
+
+- GET `/api/plots/basic/:id` — Get a single basic plot by `plotId`
+
+- GET `/api/plots/detailed` — List all detailed plots
+
+	Response (200): JSON array of `PlotDetailed` objects. Key fields:
+
+	- `id` (Number)
+	- `Owner`, `SurveyNo`, `Area`, `Village`, `District`, `Type`, `RegistrationYear`, `Status`
+	- `Coordinates` — array of coordinate pairs (e.g. `[[lat, lon], [lat, lon], ...]`)
+
+	Example response:
+
+	```json
+	[
+		{
+			"id": 201,
+			"Owner": "Bob",
+			"SurveyNo": "S-123",
+			"Area": "1.5 Acres",
+			"Village": "ExampleVillage",
+			"District": "ExampleDistrict",
+			"Type": "Agriculture",
+			"RegistrationYear": 2010,
+			"Status": "Registered",
+			"Coordinates": [[12.34, 56.78], [12.35, 56.79]]
+		}
+	]
+	```
+
+### Notes
+
+- The backend routers only implement `GET` operations for listing and fetching by id. No create/update/delete endpoints are present in the current codebase.
+
+## Usage Examples
+
+- Example `curl` to get all basic plots (backend running on default port 5000):
+
+	```bash
+	curl http://localhost:5000/api/plots/basic
+	```
+
+- Example `curl` to fetch a detailed plot by id:
+
+	```bash
+	curl http://localhost:5000/api/plots/detailed/201
+	```
+
+- Frontend: run the frontend dev server (`npm run dev` in `frontend/`) and open the app in the browser. Use the UI to navigate to map and plot details — the frontend consumes the above API endpoints.
+
+### Screenshots
+
+Screenshots are not included in the repository. Placeholder images can be added under `docs/` and referenced here.
+
+
 
