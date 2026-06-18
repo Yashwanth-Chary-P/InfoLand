@@ -94,3 +94,52 @@ Both servers can run concurrently; frontend expects the backend API under `/api/
 
 	npm start
 
+## Architecture
+
+The project follows a simple full-stack separation:
+
+- Backend (Express + MongoDB): exposes REST endpoints under `/api/plots/*` and contains Mongoose models for plot data.
+- Frontend (React + Vite): single-page application that consumes the backend API, displays maps (Leaflet), and provides UI for selection and details.
+
+### Technology Stack
+
+| Layer | Primary Technologies |
+|---|---|
+| Backend | Node.js, Express, Mongoose, MongoDB |
+| Frontend | React, Vite, Tailwind CSS, Leaflet, Redux Toolkit |
+| Authentication | Firebase (client-side auth configured) |
+
+### Repository Structure (top-level)
+
+```
+infoLand/
+├─ backend/
+│  ├─ src/
+│  │  ├─ models/
+│  │  │  ├─ PlotBasic.model.js
+│  │  │  └─ PlotDetailed.model.js
+│  │  └─ routers/
+│  │     ├─ plotBasic.router.js
+│  │     └─ plotDetailed.router.js
+│  ├─ package.json
+│  └─ server.js
+├─ frontend/
+│  ├─ src/
+│  │  ├─ app/
+│  │  ├─ components/
+│  │  ├─ features/
+│  │  ├─ pages/
+│  │  └─ firebase/
+│  ├─ package.json
+│  └─ vite.config.js
+├─ colony-map.html
+```
+
+### Major modules
+
+- `backend/src/models` — Mongoose schemas defining `PlotBasic` and `PlotDetailed` records.
+- `backend/src/routers` — Express routers exposing GET endpoints for listing and fetching plots by id.
+- `frontend/src/pages` & `frontend/src/components` — UI pages (Home, MapSelection, PlotDetails) and shared components (Navbar, Footer, PlotCard).
+- `frontend/src/features` — Redux slices for plot data (listed as `plots` and `detailedPlots`).
+
+
