@@ -230,5 +230,37 @@ All backend API routes are mounted under `/api/plots` (see `backend/server.js`).
 
 Screenshots are not included in the repository. Placeholder images can be added under `docs/` and referenced here.
 
+## Contributing
+
+Contributions are welcome. This repository is documented as a learning/demo project. If you'd like to contribute:
+
+1. Fork the repository and create a feature branch: `git checkout -b feat/your-change`
+2. Make changes limited to documentation or clearly scoped enhancements. Do not modify business logic unless discussed with maintainers.
+3. Open a pull request describing your changes and include screenshots or examples where applicable.
+
+Please follow the existing code style and commit message conventions used in this repository (e.g., `docs:`, `feat:`, `fix:` prefixes).
+
+## Development Workflow
+
+- Use branches for feature work and keep `main` stable.
+- Run backend and frontend locally while developing documentation or UI changes.
+- Linting and formatting are configured in the frontend; run `npm run lint` in `frontend/` when changing front-end code.
+
+## License
+
+No license file is included in the repository. If you maintain this project, add a `LICENSE` file to clarify reuse terms. A common choice is the MIT license.
+
+## Acknowledgements
+
+- Built with open-source libraries: Express, Mongoose, React, Vite, Leaflet, Tailwind CSS, and Firebase.
+
+## Author / Maintainers
+
+This repository contains work organized into `backend/` and `frontend/`. The commit history contains author information for code contributions. If you are the repository owner, please add contact info or a maintainer section here.
+
+---
+
+If you'd like, I can also add a `CONTRIBUTING.md` file or a `LICENSE` file based on your preferred license. What would you like me to do next?
+
 
 
