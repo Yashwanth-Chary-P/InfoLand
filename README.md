@@ -1,5 +1,7 @@
 # infoLand
 
+
+
 ![Stack](https://img.shields.io/badge/stack-Node.js%20%7C%20React%20%7C%20Vite-blue)
 ![License](https://img.shields.io/badge/license-See%20README-lightgrey)
 
